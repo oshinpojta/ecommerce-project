@@ -1,4 +1,5 @@
 const cart_items = document.querySelector('#cart .cart-items');
+const musicContent = document.querySelector("#music-content");
 
 
 const parentContainer = document.getElementById('EcommerceContainer');
@@ -68,3 +69,27 @@ parentContainer.addEventListener('click',(e)=>{
     }
 })
 
+let loadProducts = async () => {
+    let result = await axios.get("http://localhost:4000/products");
+    let products = result.data;
+    console.log(products);
+    for(let i=0;i<products.length;i++){
+        let album = document.createElement("div");
+        album.id = products[i].albumId;
+
+        album.innerHTML = `<div id='${products[i].albumId}'>
+                            <h3>${products[i].title}</h3>
+                            <div class="image-container">
+                                <img class="prod-images" src="${products[i].imageUrl}" alt="">
+                            </div>
+                                            <div class="prod-details">
+                                <span>$<span>${products[i].price}</span></span>
+                                <button id="${products[i].id}" class="shop-item-button" type='button'>ADD TO CART</button>
+                            </div>
+                        </div>`
+
+        musicContent.appendChild(album);
+    }
+}
+
+window.addEventListener("DOMContentLoaded", loadProducts);
