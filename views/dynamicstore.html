@@ -15,7 +15,7 @@
                 <li><a href="./index.html">HOME</a></li>
                 <li><a href="#">STORE</a></li>
                 <li><a href="./about.html">ABOUT</a></li>
-                <a href="#cart" class="cart-holder">cart<span class='cart-number'>0</span></a>
+                <a href="#cart" class="cart-holder">cart<span id="cart-number" class='cart-number'>0</span></a>
             </ul>
             <h1>The Generics</h1>
         </header>
@@ -63,9 +63,11 @@
                     </div>
                 </div> -->
             </div>
-
+            
         </section>
-        <section id="merch" class="container">
+        <div id="pagination">
+        </div>
+        <!-- <section id="merch" class="container">
             <h2>MERCH</h2>
             <div id="merch-content">
                 <div id="t-shirt">
@@ -90,7 +92,7 @@
                 </div>
             </div>
 
-        </section>
+        </section> -->
         <section id="cart" class="container">
             <h2>CART</h2>
             <button class="cancel">X</button>
@@ -98,7 +100,7 @@
                 <span class='cart-item cart-column'>ITEM</span>
                 <span class='cart-price cart-column'>PRICE</span>
                 <span class='cart-quantity cart-column'>QUANTITY</span>
-            </div>
+            </div> 
             <div class='cart-items'>
                 <!-- <div class="cart-row">
                     <span class='cart-item cart-column'>
@@ -131,9 +133,9 @@
                 </span>
             </div>
             <button class='purchase-btn' type='button'>PURCHASE</button>
+            <div id="paginationcart">
+            </div>
         </section>
-
-        <button class="cart-btn-bottom"> <a href="#cart" class="cart-bottom">See the cart</a></button>
     </div>
     <!-- Toggle notification -->
     <div id="container"></div>

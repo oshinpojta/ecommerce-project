@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -312,9 +314,9 @@ footer .footer-icons{
     font-size:25px;
     margin:20px;
 }
-#about div{
-    /* display:flex; */
-}
+/* #about div{
+    display:flex;
+} */
 
 #about img{
     float:left;
@@ -438,4 +440,54 @@ header ul a{
     border:1px solid rgb(121, 117, 117);
     border-radius:7px;
     padding:5px;
+}
+
+#pagination {
+    display:flex;
+    width: 200px;
+    padding:15px;
+    border:none;
+    border-radius:7px;
+    margin:auto;
+}
+
+#pagination button{
+    display:flex;
+    padding:15px;
+    font-weight: bolder;
+    background-color: rgb(255, 255, 255);
+    margin:auto;
+    border: none;
+    border-radius: 10px;
+    cursor:pointer;
+}
+
+#pagination button.current-page{
+    color: aliceblue;
+    background-color: rgb(36, 9, 78);
+}
+
+#paginationcart {
+    display:flex;
+    width: 100px;
+    padding:10px;
+    border:none;
+    border-radius:5px;
+    margin:auto;
+}
+
+#paginationcart button{
+    display:flex;
+    padding:10px;
+    font-weight: bolder;
+    background-color: rgb(255, 255, 255);
+    margin:auto;
+    border: none;
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+#paginationcart button.current-page{
+    color: aliceblue;
+    background-color: rgb(3, 61, 47);
 }

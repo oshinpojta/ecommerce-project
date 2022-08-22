@@ -2,13 +2,27 @@ const Cart = require("../models/cart");
 const Product = require("../models/product");
 const CartItem = require("../models/cart-item");
 
+const limitCartItems = 2;
+
 exports.getCart = (req, res, next) => {
+    let cartPage = 1;
+    console.log("page:",req.query.page);
+    if(req.query.page!=undefined){
+        cartPage = req.query.page;
+    }
     Cart.findAll().then(carts => {
-        return carts[0].getProducts().catch(err => console.log(err));
+        return carts[0].getProducts({
+            offset:((cartPage-1)*limitCartItems),
+            limit : limitCartItems,
+            subQuery:false
+        }).catch(err => console.log(err));
     }).then(products => {
-        res.json(products);
+        res.status(200).json(products);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({success : false});
+    });
 }
 
 exports.addToCart = (req, res, next) => {
@@ -39,14 +53,47 @@ exports.addToCart = (req, res, next) => {
         });
     }).then((result)=>{
         console.log("result",result[0]);
-        res.status(200).json({added : true});
-    }).catch(err => console.log(err));
+        res.status(200).json({success : true});
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({success : false});
+    });
 } 
 
 exports.deleteProductInCart = (req, res, next) => {
     const prodId = req.params.productId;
     CartItem.destroy({where : {productId : prodId}}).then(result => {
         console.log("result",result);
-        res.status(200).json({deleted : true});
-    }).catch(err => console.log(err));
+        res.status(200).json({success : true});
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({success : false});
+    });
+}
+
+exports.getCartCount = async (req, res, next ) => {
+    try{
+        let count = await CartItem.count();
+        res.json(count);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success : false});
+    };
+}
+
+exports.getCartTotalPrice = async (req, res, next) => {
+    try{
+        //let cartItems = await CartItem.findAll();
+        let totalprice = 0;
+        let cart = await req.user.getCart();
+        let cartItems = await cart.getProducts();
+        for(let i=0;i<cartItems.length;i++){
+            totalprice +=  cartItems[i].price * cartItems[i].cartItem.quantity;
+        }
+        console.log(totalprice);
+        res.json(totalprice);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success : false});
+    };
 }
