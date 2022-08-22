@@ -18,7 +18,7 @@ parentContainer.addEventListener('click',async (e)=>{
         }
         let response = await axios.post(`http://localhost:4000/cart/${_id}`);
         console.log(response);
-        if(response.data.added==true){
+        if(response.data.success==true){
             document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
             const cart_item = document.createElement('div');
             cart_item.classList.add('cart-row');
@@ -79,7 +79,7 @@ parentContainer.addEventListener('click',async (e)=>{
         console.log(_id);
         let response = await axios.delete(`http://localhost:4000/cart/${_id}`);
         console.log(response);
-        if(response.data.deleted==true){
+        if(response.data.success==true){
             let total_cart_price = document.querySelector('#total-value').innerText;
             total_cart_price = parseFloat(total_cart_price).toFixed(2) - parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2) ;
             document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)-1
