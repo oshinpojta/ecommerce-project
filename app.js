@@ -1,20 +1,52 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const productRoutes = require("./routes/productRoutes")
 const sequelize = require("./utils/database");
 const errorController = require("./controllers/error");
 const cors = require("cors");
 
+const cartRoutes = require("./routes/cartRoutes");
+const productRoutes = require("./routes/productRoutes")
+
+const Cart = require("./models/cart");
+const CartItem = require("./models/cart-item");
+const Product = require("./models/product");
+const User = require("./models/user");
+
+Product.belongsTo(User, {contraints : true, onDelete : "CASCADE"});
+User.hasOne(Cart);
+User.hasMany(Product);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, {through : CartItem});
+Product.belongsToMany(Cart, {through : CartItem});
+
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
-app.use(productRoutes);
+app.use((req, res, next) =>{
+    User.findByPk(1).then(user => {
+        req.user = user;
+        next();
+    }).catch(err => console.log(err));
+});
+
+app.use("/products",productRoutes);
+app.use("/cart", cartRoutes);
 app.use(errorController.get404);
 
-sequelize.sync().then(() => {
+
+sequelize.sync().then(()=>{
+    return User.findByPk(1);
+}).then(user => {
+    if(!user){
+        return User.create({name : "Oshin", email : "sujanian785@gmail.com", password : "12345678"});
+    }
+    return user;
+}).then( user => {
+    return user.createCart();
+})
+.then(() => {
     app.listen(4000);
 }).catch(err => console.log(err));
 

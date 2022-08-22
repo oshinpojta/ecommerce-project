@@ -3,10 +3,11 @@ const musicContent = document.querySelector("#music-content");
 
 
 const parentContainer = document.getElementById('EcommerceContainer');
-parentContainer.addEventListener('click',(e)=>{
+parentContainer.addEventListener('click',async (e)=>{
 
     if (e.target.className=='shop-item-button'){
-        const id = e.target.parentNode.parentNode.id
+        const _id = e.target.id;
+        const id = e.target.parentNode.parentNode.id;
         const name = document.querySelector(`#${id} h3`).innerText;
         const img_src = document.querySelector(`#${id} img`).src;
         const price = e.target.parentNode.firstElementChild.firstElementChild.innerText;
@@ -15,33 +16,46 @@ parentContainer.addEventListener('click',(e)=>{
             alert('This item is already added to the cart');
             return
         }
-        document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
-        const cart_item = document.createElement('div');
-        cart_item.classList.add('cart-row');
-        cart_item.setAttribute('id',`in-cart-${id}`);
-        total_cart_price = parseFloat(total_cart_price) + parseFloat(price)
-        total_cart_price = total_cart_price.toFixed(2)
-        document.querySelector('#total-value').innerText = `${total_cart_price}`;
-        cart_item.innerHTML = `
-        <span class='cart-item cart-column'>
-        <img class='cart-img' src="${img_src}" alt="">
-            <span>${name}</span>
-    </span>
-    <span class='cart-price cart-column'>${price}</span>
-    <span class='cart-quantity cart-column'>
-        <input type="text" value="1">
-        <button>REMOVE</button>
-    </span>`
-        cart_items.appendChild(cart_item)
+        let response = await axios.post(`http://localhost:4000/cart/${_id}`);
+        console.log(response);
+        if(response.data.added==true){
+            document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
+            const cart_item = document.createElement('div');
+            cart_item.classList.add('cart-row');
+            cart_item.setAttribute('id',`in-cart-${id}`);
+            total_cart_price = parseFloat(total_cart_price) + parseFloat(price)
+            total_cart_price = total_cart_price.toFixed(2)
+            document.querySelector('#total-value').innerText = `${total_cart_price}`;
+            cart_item.innerHTML = `
+            <span class='cart-item cart-column'>
+            <img class='cart-img' src="${img_src}" alt="">
+                <span>${name}</span>
+            </span>
+            <span class='cart-price cart-column'>${price}</span>
+            <span class='cart-quantity cart-column'>
+                <input type="text" value="1">
+                <button id=${_id}>REMOVE</button>
+            </span>`
+            cart_items.appendChild(cart_item)
 
-        const container = document.getElementById('container');
-        const notification = document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerHTML = `<h4>Your Product : <span>${name}</span> is added to the cart<h4>`;
-        container.appendChild(notification);
-        setTimeout(()=>{
-            notification.remove();
-        },2500)
+            const container = document.getElementById('container');
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `<h4>Your Product : <span>${name}</span> is added to the cart<h4>`;
+            container.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove();
+            },2500)
+        }else{
+            const container = document.getElementById('container');
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `<h4 style="color : Red">ERROR ! : Your Product : <span>${name}</span> cannot be added to the cart<h4>`;
+            container.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove();
+            },2500)
+        }
     }
     if (e.target.className=='cart-btn-bottom' || e.target.className=='cart-bottom' || e.target.className=='cart-holder'){
         document.querySelector('#cart').style = "display:block;"
@@ -61,11 +75,17 @@ parentContainer.addEventListener('click',(e)=>{
     }
 
     if (e.target.innerText=='REMOVE'){
-        let total_cart_price = document.querySelector('#total-value').innerText;
-        total_cart_price = parseFloat(total_cart_price).toFixed(2) - parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2) ;
-        document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)-1
-        document.querySelector('#total-value').innerText = `${total_cart_price.toFixed(2)}`
-        e.target.parentNode.parentNode.remove()
+        let _id = e.target.id;
+        console.log(_id);
+        let response = await axios.delete(`http://localhost:4000/cart/${_id}`);
+        console.log(response);
+        if(response.data.deleted==true){
+            let total_cart_price = document.querySelector('#total-value').innerText;
+            total_cart_price = parseFloat(total_cart_price).toFixed(2) - parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2) ;
+            document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)-1
+            document.querySelector('#total-value').innerText = `${total_cart_price.toFixed(2)}`
+            e.target.parentNode.parentNode.remove();
+        }
     }
 })
 
@@ -73,11 +93,9 @@ let loadProducts = async () => {
     let result = await axios.get("http://localhost:4000/products");
     let products = result.data;
     console.log(products);
+    let htmlMuscText = "";
     for(let i=0;i<products.length;i++){
-        let album = document.createElement("div");
-        album.id = products[i].albumId;
-
-        album.innerHTML = `<div id='${products[i].albumId}'>
+        htmlMuscText +=`<div id='${products[i].albumId}'>
                             <h3>${products[i].title}</h3>
                             <div class="image-container">
                                 <img class="prod-images" src="${products[i].imageUrl}" alt="">
@@ -87,9 +105,8 @@ let loadProducts = async () => {
                                 <button id="${products[i].id}" class="shop-item-button" type='button'>ADD TO CART</button>
                             </div>
                         </div>`
-
-        musicContent.appendChild(album);
     }
+    musicContent.innerHTML = htmlMuscText;
 }
 
 window.addEventListener("DOMContentLoaded", loadProducts);

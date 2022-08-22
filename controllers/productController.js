@@ -6,17 +6,12 @@ exports.getProducts = (req, res, next ) => {
     }).catch(err => console.log(err));
 }
 
-exports.postAddProduct = (req, res, next) => {
+exports.postAddProduct = async (req, res, next) => {
     try{
         const body = req.body;
-        console.log(req.body);
+        console.log(body);
         const product = Product.create({ albumId : body.albumId, title : body.title, imageUrl : body.imageUrl, price : body.price});
-        Product.create(product).then(product => {
-            res.json(product);
-        }).catch(err => {
-            res.json(err);
-        });
-        
+        res.status(200).json({created : true});
     }catch(err){
         console.log(err);
     }
