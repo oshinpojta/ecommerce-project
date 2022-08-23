@@ -46,12 +46,13 @@ app.use((req, res, next) =>{
 app.use("/products",productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders",orderRoutes);
-app.use((req, res, next )=>{
+app.use((req, res)=>{
     try{
         let url = req.url.split("/");
+        console.log(path.join(__dirname, `views/${url[url.length-1]}`));
         res.sendFile(path.join(__dirname, `views/${url[url.length-1]}`));
     }catch(err){
-        res.status(404).send("Page not Found");
+        res.sendFile(path.join(__dirname, `views/dynamicstore.html`));
     }
     
 })
