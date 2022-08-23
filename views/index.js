@@ -11,8 +11,9 @@ const productLimit = 2;
 const cartLimit = 2;
 
 let pathnameArr = window.location.pathname.split("/");
-console.log(pathnameArr[pathnameArr.length-1]=="orders.html");
+//console.log(pathnameArr[pathnameArr.length-1]=="orders.html");
 if(pathnameArr[pathnameArr.length-1] == "dynamicstore.html"){
+    //console.log("Store");
     let total_cart_price = document.querySelector('#total-value').innerText;
 
     const parentContainer = document.getElementById('EcommerceContainer');
@@ -252,6 +253,7 @@ if(pathnameArr[pathnameArr.length-1] == "dynamicstore.html"){
     });
 
 }else if(pathnameArr[pathnameArr.length-1] == "orders.html"){
+    //console.log("Orders");
     orderSection.addEventListener('click', async (e)=>{
         if(e.target.className=="paginationBtn"){
             
@@ -316,7 +318,7 @@ let getCartPrice = async () => {
 
 let loadProducts = async () => {
 
-    if(pathnameArr[2] == "dynamicstore.html"){
+    if(pathnameArr[pathnameArr.length-1] == "dynamicstore.html"){
         paginationDiv.innerHTML =  `<button class="current-page paginationBtn">1</button>
                                     <button class="paginationBtn">2</button>
                                     <button class="paginationBtn">3</button>`;
@@ -343,7 +345,7 @@ let loadProducts = async () => {
         }
         musicContent.innerHTML = htmlMuscText;
     }
-    else if(pathnameArr[2] == "orders.html"){
+    else if(pathnameArr[pathnameArr.length-1] == "orders.html"){
         
         // paginationDiv.innerHTML =  `<button class="current-page paginationBtn">1</button>
         // <button class="paginationBtn">2</button>

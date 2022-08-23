@@ -50,12 +50,10 @@ app.use("/orders",orderRoutes);
 app.use((req, res)=>{
     try{
         let url = req.url.split("/");
-        if(url[url.length-1]!="dynamicstore.html" || url[url.length-1]!="about.html" || url[url.length-1]!="order.html"){
-            console.log(path.join(__dirname, `views/${url[url.length-1]}`));
-            res.sendFile(path.join(__dirname, `views/index.html`));
-        }
+        //console.log(path.join(__dirname, `views/${url[url.length-1]}`));
+        res.sendFile(path.join(__dirname, `views/${url[url.length-1]}`));
     }catch(err){
-        res.sendFile(path.join(__dirname, `views/dynamicstore.html`));
+        res.redirect("/index.html")
     }
 })
 app.use(errorController.get404);
