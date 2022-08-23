@@ -35,7 +35,6 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, `views`)));
 
 app.use((req, res, next) =>{
     User.findByPk(1).then(user => {
