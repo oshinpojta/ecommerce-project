@@ -108,6 +108,14 @@ header .play-btn{
     font-weight:700;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+section h1{
+    font-family:"Metal Mania";
+    text-align:center;
+    padding:20px;
+    font-size:30px;
+}
+
 section h2{
     font-family:"Metal Mania";
     text-align:center;
@@ -490,4 +498,84 @@ header ul a{
 #paginationcart button.current-page{
     color: aliceblue;
     background-color: rgb(3, 61, 47);
+}
+
+
+.shop-item-button{
+    cursor:pointer;
+    padding:8px;
+    color:white;
+    border:none;
+    font-size:15px;
+    font-weight: bold;
+    border-radius: 4%;
+    background: #56CCF2;
+}
+.shop-item-button:hover,.shop-item-button:hover{
+    background: #0eabdf;
+}
+
+
+#orders-content{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+}
+
+#orders-content div div{
+    margin:30px;
+}
+
+#orders-content div div h3{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#orders-content div .prod-details{
+    display: flex;
+    margin: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#orders-content .shop-item-button{
+    cursor:pointer;
+    padding:8px;
+    color:white;
+    border:none;
+    font-size:15px;
+    font-weight: bold;
+    border-radius: 4%;
+    background: #56CCF2;
+}
+
+.cancel-order-button{
+    border-radius: 4%;
+    background: #582009;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin: auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+
+.cancel-order-button button{
+    background-color: inherit;
+    border: none;
+    font-family:"Metal Mania";
+    color:white;
+    font-size:20px;
+    font-weight: lighter;
+    cursor:pointer;
+    padding:10px;
+    width: 60px;
+}
+.cancel-order-button:hover,.cancel-order-button:hover{
+    background: #df500e;
 }

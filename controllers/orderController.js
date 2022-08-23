@@ -6,8 +6,19 @@ const OrderItem = require("../models/order-item");
 
 exports.getOrders = async (req, res, next) => {
     try{
+        let allOrders = [];
         let orders = await Order.findAll({where : {userId : req.user.id}});
-        res.json({ data : orders, success : true });
+        for(let i=0;i<orders.length;i++){
+            let orderItems = await OrderItem.findAll({where : { orderId : orders[i].id}});
+            let orderDetails = [];
+            for(let j=0;j<orderItems.length;j++){
+                let product = await Product.findByPk(orderItems[j].productId);
+                let orderObj = [orderItems[j], product];
+                orderDetails.push(orderObj);
+            }
+            allOrders.push(orderDetails);
+        }
+        res.json({ data : allOrders, success : true });
     }catch(err){
         console.log(err);
         res.status(500).json({success : false});
@@ -42,6 +53,7 @@ exports.addOrder = async (req, res, next) => {
             });
             results.push(result);
         }
+        CartItem.destroy({where : {cartId : cart.id}});
         res.json({ orderId : order.id, success : true});
     }catch(err){
         console.log(err);
