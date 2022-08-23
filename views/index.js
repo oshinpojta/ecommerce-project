@@ -6,6 +6,7 @@ const cartNumber = document.querySelector("#cart-number");
 const orderContent = document.querySelector("#orders-content");
 const orderSection = document.querySelector("#orders");
 
+let url = "http://44.203.188.3:4000";
 const productLimit = 2;
 const cartLimit = 2;
 
@@ -28,10 +29,10 @@ if(pathnameArr[2] == "dynamicstore.html"){
             //     alert('This item is already added to the cart');
             //     return
             // }
-            let response = await axios.post(`http://localhost:4000/cart/${_id}`);
-            console.log(response);
+            let response = await axios.post(`${url}/cart/${_id}`);
+            // console.log(response);
             if(response.data.success==true){
-                let cartResult = await axios.get(`http://localhost:4000/cart/count`);
+                let cartResult = await axios.get(`${url}/cart/count`);
                 getCartPrice();
                 let cartCount = cartResult.data;
                 cartNumber.innerText = cartCount;
@@ -60,14 +61,14 @@ if(pathnameArr[2] == "dynamicstore.html"){
         if (e.target.className=='cart-btn-bottom' || e.target.className=='cart-bottom' || e.target.className=='cart-holder'){
 
             let currentPageNumber = 1;
-            let result = await axios.get(`http://localhost:4000/cart/?page=${currentPageNumber}`);
+            let result = await axios.get(`${url}/cart/?page=${currentPageNumber}`);
             getCartPrice();
             let cartItems = result.data;
-            console.log(cartItems);
+            // console.log(cartItems);
             cart_items.innerHTML = "";
             for(let i=0;i<cartItems.length;i++){
                 let cartItem = cartItems[i];
-                console.log(cartItem);
+                // console.log(cartItem);
                 const _id = cartItem.id;
                 const id = cartItem.albumId;
                 const name = cartItem.title;
@@ -108,7 +109,7 @@ if(pathnameArr[2] == "dynamicstore.html"){
                 alert('You have Nothing in Cart , Add some products to purchase !');
                 return
             }
-            let response = await axios.post(`http://localhost:4000/orders/addOrder`);
+            let response = await axios.post(`${url}/orders/addOrder`);
             if(response.data.success == true){
                 alert('Thanks for the purchase')
                 cart_items.innerHTML = "";
@@ -138,9 +139,9 @@ if(pathnameArr[2] == "dynamicstore.html"){
 
         if (e.target.innerText=='REMOVE'){
             let _id = e.target.id;
-            console.log(_id);
-            let response = await axios.delete(`http://localhost:4000/cart/${_id}`);
-            console.log(response);
+            
+            let response = await axios.delete(`${url}/cart/${_id}`);
+    
             if(response.data.success==true){
                 let total_cart_price = document.querySelector('#total-value').innerText;
                 total_cart_price = parseFloat(total_cart_price).toFixed(2) - parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2) ;
@@ -152,11 +153,11 @@ if(pathnameArr[2] == "dynamicstore.html"){
         }
 
         if(e.target.className=="paginationBtn"){
-            console.log(e.target.innerText);
+            
             let currentPageNumber = parseInt(e.target.innerText);
-            let result = await axios.get(`http://localhost:4000/products/?page=${currentPageNumber}`);
+            let result = await axios.get(`${url}/products/?page=${currentPageNumber}`);
             let products = result.data;
-            console.log(products);
+            
             let htmlMuscText = "";
             for(let i=0;i<products.length;i++){
                 htmlMuscText +=`<div id='${products[i].albumId}'>
@@ -172,7 +173,7 @@ if(pathnameArr[2] == "dynamicstore.html"){
             }
             musicContent.innerHTML = htmlMuscText;
 
-            let resultCount = await axios.get(`http://localhost:4000/products/count`);
+            let resultCount = await axios.get(`${url}/products/count`);
 
             let productsCount = resultCount.data;
             paginationDiv.innerHTML = "";
@@ -194,16 +195,16 @@ if(pathnameArr[2] == "dynamicstore.html"){
 
         if(e.target.className == "paginationCartBtn"){
 
-            console.log(e.target.innerText);
+           
             let currentPageNumber = parseInt(e.target.innerText);
-            let result = await axios.get(`http://localhost:4000/cart/?page=${currentPageNumber}`);
+            let result = await axios.get(`${url}/cart/?page=${currentPageNumber}`);
             getCartPrice();
             let cartItems = result.data;
-            console.log(cartItems);
+            
             cart_items.innerHTML = "";
             for(let i=0;i<cartItems.length;i++){
                 let cartItem = cartItems[i];
-                console.log(cartItem);
+                
                 const _id = cartItem.id;
                 const id = cartItem.albumId;
                 const name = cartItem.title;
@@ -229,10 +230,10 @@ if(pathnameArr[2] == "dynamicstore.html"){
                 cart_items.appendChild(cart_item);
             }
 
-            let resultCount = await axios.get(`http://localhost:4000/products/count`);
+            let resultCount = await axios.get(`${url}/products/count`);
 
             let cartCount = resultCount.data;
-            console.log(cartCount);
+           
             if(currentPageNumber!=1 && (currentPageNumber)*cartLimit<cartCount){
                 paginationCart.innerHTML = `<button class="paginationCartBtn">${currentPageNumber-1}</button>
                                     <button class="current-page paginationCartBtn">${currentPageNumber}</button>
@@ -253,9 +254,9 @@ if(pathnameArr[2] == "dynamicstore.html"){
 }else if(pathnameArr[2] == "orders.html"){
     orderSection.addEventListener('click', async (e)=>{
         if(e.target.className=="paginationBtn"){
-            console.log(e.target.innerText);
+            
             let currentPageNumber = parseInt(e.target.innerText);
-            // let result = await axios.get(`http://localhost:4000/orders/?page=${currentPageNumber}`);
+            // let result = await axios.get(`${url}/orders/?page=${currentPageNumber}`);
             // let products = result.data;
             // console.log(products);
             // let htmlMuscText = "";
@@ -273,7 +274,7 @@ if(pathnameArr[2] == "dynamicstore.html"){
             // }
             // musicContent.innerHTML = htmlMuscText;
 
-            // let resultCount = await axios.get(`http://localhost:4000/products/count`);
+            // let resultCount = await axios.get(`${url}/products/count`);
 
             // let productsCount = resultCount.data;
             // paginationDiv.innerHTML = "";
@@ -295,8 +296,8 @@ if(pathnameArr[2] == "dynamicstore.html"){
 
         if(e.target.className == "cancel-order-button-btn"){
             let orderId = e.target.parentNode.id;
-            console.log(e.target.parentNode.id);
-            let response = await axios.delete(`http://localhost:4000/orders/${orderId}`);
+    
+            let response = await axios.delete(`${url}/orders/${orderId}`);
             if(response.data.success==true){
                 e.target.parentNode.parentNode.remove();
             }
@@ -307,9 +308,9 @@ if(pathnameArr[2] == "dynamicstore.html"){
 
 let getCartPrice = async () => {
 
-    let result = await axios.get("http://localhost:4000/cart/totalprice");
+    let result = await axios.get(`${url}/cart/totalprice`);
     total_cart_price = result.data.toFixed(2);
-    console.log(total_cart_price);
+    
     document.querySelector('#total-value').innerText = `${total_cart_price}`;
 
 }
@@ -321,12 +322,12 @@ let loadProducts = async () => {
                                     <button class="paginationBtn">2</button>
                                     <button class="paginationBtn">3</button>`;
 
-        let cartResult = await axios.get(`http://localhost:4000/cart/count`);
+        let cartResult = await axios.get(`${url}/cart/count`);
         let cartCount = cartResult.data;
         cartNumber.innerText = cartCount;
         getCartPrice();
 
-        let result = await axios.get("http://localhost:4000/products/?page=1");
+        let result = await axios.get(`${url}/products/?page=1`);
         let products = result.data;
         let htmlMuscText = "";
         for(let i=0;i<products.length;i++){
@@ -349,7 +350,7 @@ let loadProducts = async () => {
         // <button class="paginationBtn">2</button>
         // <button class="paginationBtn">3</button>`;
         orderContent.innerHTML = "";
-        let result = await axios.get("http://localhost:4000/orders");
+        let result = await axios.get(`${url}/orders`);
         // console.log(result);
         let orders = result.data.data;
         //console.log(orders);

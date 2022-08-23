@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const errorController = require("./controllers/error");
 const cors = require("cors");
@@ -45,6 +46,15 @@ app.use((req, res, next) =>{
 app.use("/products",productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders",orderRoutes);
+app.use((req, res, next )=>{
+    try{
+        let url = req.url.split("/");
+        res.sendFile(path.join(__dirname, `views/${url[url.length-1]}`));
+    }catch(err){
+        res.status(404).send("Page not Found");
+    }
+    
+})
 app.use(errorController.get404);
 
 
