@@ -72,6 +72,7 @@ exports.deleteProductInCart = (req, res, next) => {
 exports.getCartCount = async (req, res, next ) => {
     try{
         let count = await CartItem.count();
+        console.log(count);
         res.json(count);
     }catch(err){
         console.log(err);

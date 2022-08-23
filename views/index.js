@@ -310,7 +310,6 @@ let getCartPrice = async () => {
 
     let result = await axios.get(`${url}/cart/totalprice`);
     total_cart_price = result.data.toFixed(2);
-    
     document.querySelector('#total-value').innerText = `${total_cart_price}`;
 
 }
