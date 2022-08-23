@@ -31,6 +31,7 @@ parentContainer.addEventListener('click',async (e)=>{
             cartNumber.innerText = cartCount;
             document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1;
             const container = document.getElementById('container');
+            container.style.backgroundColor = "cyan";
             const notification = document.createElement('div');
             notification.classList.add('notification');
             notification.innerHTML = `<h4>Your Product : <span>${name}</span> is added to the cart<h4>`;
@@ -40,6 +41,7 @@ parentContainer.addEventListener('click',async (e)=>{
             },2500);
         }else{
             const container = document.getElementById('container');
+            container.style.backgroundColor = "cyan";
             const notification = document.createElement('div');
             notification.classList.add('notification');
             notification.innerHTML = `<h4 style="color : Red">ERROR ! : Your Product : <span>${name}</span> cannot be added to the cart<h4>`;
@@ -100,10 +102,32 @@ parentContainer.addEventListener('click',async (e)=>{
             alert('You have Nothing in Cart , Add some products to purchase !');
             return
         }
-        alert('Thanks for the purchase')
-        cart_items.innerHTML = ""
-        document.querySelector('.cart-number').innerText = 0
-        document.querySelector('#total-value').innerText = `0`;
+        let response = await axios.post(`http://localhost:4000/orders/addOrder`);
+        if(response.data.success == true){
+            alert('Thanks for the purchase')
+            cart_items.innerHTML = "";
+            document.querySelector('.cart-number').innerText = 0;
+            document.querySelector('#total-value').innerText = `0`;
+            const container = document.getElementById('container');
+            container.style.backgroundColor = "rebeccapurple";
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `<h4>SUCCESS ! : Your Order [ OrderId: ${response.data.orderId} ] has been placed successfully!<h4>`;
+            container.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove();
+            },5000)
+        }else{
+            const container = document.getElementById('container');
+            container.style.backgroundColor = "rebeccapurple";
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `<h4 style="color : Orange;">ERROR ! : Your Order cannot be placed! Please Try Again<h4>`;
+            container.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove();
+            },5000)
+        }
     }
 
     if (e.target.innerText=='REMOVE'){
@@ -230,6 +254,10 @@ let getCartPrice = async () => {
 }
 
 let loadProducts = async () => {
+
+    paginationDiv.innerHTML =  `<button class="current-page paginationBtn">1</button>
+                                <button class="paginationBtn">2</button>
+                                <button class="paginationBtn">3</button>`;
 
     let cartResult = await axios.get(`http://localhost:4000/cart/count`);
     let cartCount = cartResult.data;

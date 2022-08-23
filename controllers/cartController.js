@@ -47,12 +47,10 @@ exports.addToCart = (req, res, next) => {
         }
         return Product.findByPk(prodId);
     }).then(product => {
-        console.log(product);
         return fetchedCart.addProduct(product, {
             through: {quantity : newQuantity}
         });
     }).then((result)=>{
-        console.log("result",result[0]);
         res.status(200).json({success : true});
     }).catch(err => {
         console.log(err);

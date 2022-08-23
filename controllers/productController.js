@@ -24,7 +24,7 @@ exports.postAddProduct = async (req, res, next) => {
     try{
         const body = req.body;
         console.log(body);
-        const product = Product.create({ albumId : body.albumId, title : body.title, imageUrl : body.imageUrl, price : body.price});
+        const product = await Product.create({ albumId : body.albumId, title : body.title, imageUrl : body.imageUrl, price : body.price});
         res.status(200).json({success : true});
     }catch(err) {
         console.log(err);
