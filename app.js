@@ -1,8 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const sequelize = require("./utils/database");
 const errorController = require("./controllers/error");
 const cors = require("cors");
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const sequelize = require("./utils/database");
 
 const cartRoutes = require("./routes/cartRoutes");
 const productRoutes = require("./routes/productRoutes");
