@@ -6,7 +6,7 @@ const cartNumber = document.querySelector("#cart-number");
 const orderContent = document.querySelector("#orders-content");
 const orderSection = document.querySelector("#orders");
 
-let url = "https://44.203.188.3:4000";
+let url = "http://44.203.188.3:4000";
 const productLimit = 2;
 const cartLimit = 2;
 
