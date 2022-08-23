@@ -6,13 +6,13 @@ const cartNumber = document.querySelector("#cart-number");
 const orderContent = document.querySelector("#orders-content");
 const orderSection = document.querySelector("#orders");
 
-let url = "http://44.203.188.3:4000";
+let url = "https://44.203.188.3:4000";
 const productLimit = 2;
 const cartLimit = 2;
 
 let pathnameArr = window.location.pathname.split("/");
 
-if(pathnameArr[2] == "dynamicstore.html"){
+if(pathnameArr[1] == "dynamicstore.html"){
     let total_cart_price = document.querySelector('#total-value').innerText;
 
     const parentContainer = document.getElementById('EcommerceContainer');
@@ -251,7 +251,7 @@ if(pathnameArr[2] == "dynamicstore.html"){
         }
     });
 
-}else if(pathnameArr[2] == "orders.html"){
+}else if(pathnameArr[1] == "orders.html"){
     orderSection.addEventListener('click', async (e)=>{
         if(e.target.className=="paginationBtn"){
             
